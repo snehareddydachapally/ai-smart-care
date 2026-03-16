@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify
-import mysql.connector
+import sqlite3
 import os
 from werkzeug.utils import secure_filename
 
