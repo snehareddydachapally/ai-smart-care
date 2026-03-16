@@ -1,0 +1,167 @@
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#f4f6f9;
+}
+
+/* Homepage gradient */
+
+.hero-page{
+background:linear-gradient(135deg,#2A7FFF,#00C897);
+min-height:100vh;
+color:white;
+}
+
+/* Navbar */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:20px 40px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-weight:500;
+}
+
+/* Hero */
+
+.hero{
+display:flex;
+align-items:center;
+justify-content:center;
+padding:80px 50px;
+gap:50px;
+flex-wrap:wrap;
+}
+
+.hero img{
+width:350px;
+filter:drop-shadow(0 15px 30px rgba(0,0,0,0.4));
+animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-15px)}
+100%{transform:translateY(0)}
+}
+
+.hero-text{
+max-width:500px;
+}
+
+.hero-text h1{
+font-size:45px;
+font-weight:700;
+margin-bottom:15px;
+}
+
+.warning-text{
+font-size:13px;
+opacity:0.8;
+margin-bottom:25px;
+}
+
+/* Buttons */
+
+.btn-main{
+padding:12px 28px;
+border-radius:8px;
+font-weight:600;
+margin-right:10px;
+text-decoration:none;
+}
+
+.login-btn{
+background:white;
+color:#2A7FFF;
+}
+
+.register-btn{
+background:#00C897;
+color:white;
+}
+
+/* Features */
+
+.features{
+padding:80px 40px;
+background:white;
+color:#333;
+}
+
+.feature-card{
+background:white;
+border-radius:15px;
+padding:30px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+transition:0.4s;
+}
+
+.feature-card img{
+width:80px;
+margin-bottom:15px;
+}
+
+.feature-card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* Disclaimer Modal */
+
+.disclaimer-modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.disclaimer-content{
+background:white;
+color:#333;
+padding:30px;
+border-radius:12px;
+width:450px;
+text-align:center;
+box-shadow:0 15px 35px rgba(0,0,0,0.4);
+}
+
+.disclaimer-content h2{
+color:#d9534f;
+margin-bottom:15px;
+}
+
+.agree-text{
+font-size:14px;
+display:block;
+margin-top:15px;
+}
+
+.accept-btn{
+margin-top:15px;
+padding:10px 25px;
+border:none;
+background:#2A7FFF;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+.accept-btn:hover{
+background:#1f65cc;
+}

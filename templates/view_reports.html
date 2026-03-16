@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>View Reports</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+margin:0;
+background:linear-gradient(135deg,#2A7FFF,#00C897);
+min-height:100vh;
+}
+
+/* Navbar */
+
+.navbar{
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+color:white;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+}
+
+/* Container */
+
+.container{
+padding:50px;
+}
+
+/* Report Card */
+
+.report-card{
+background:white;
+border-radius:15px;
+padding:25px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+transition:0.3s;
+}
+
+.report-card:hover{
+transform:translateY(-8px);
+}
+
+.report-card img{
+width:60px;
+margin-bottom:10px;
+}
+
+/* Grid */
+
+.report-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:30px;
+}
+
+/* Button */
+
+.view-btn{
+display:inline-block;
+margin-top:10px;
+padding:8px 15px;
+background:#2A7FFF;
+color:white;
+border-radius:6px;
+text-decoration:none;
+}
+
+.view-btn:hover{
+background:#1e60c8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<h3>Smart AI Healthcare</h3>
+
+<div>
+<a href="/dashboard/{{username}}">Dashboard</a>
+<a href="/logout">Logout</a>
+</div>
+
+</div>
+
+
+<div class="container">
+
+<h2 style="color:white;">Uploaded Medical Reports</h2>
+
+<div class="report-grid">
+
+{% for r in reports %}
+
+<div class="report-card">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3371/3371425.png">
+
+<h5>{{r[2]}}</h5>
+
+<a href="/uploads/{{r[2]}}" target="_blank" class="view-btn">
+View Report
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</body>
+
+</html>

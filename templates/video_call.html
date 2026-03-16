@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>Video Consultation</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f4f7fb;
+font-family:'Segoe UI';
+text-align:center;
+}
+
+.video-container{
+display:flex;
+justify-content:center;
+gap:40px;
+margin-top:40px;
+}
+
+.video-box{
+text-align:center;
+}
+
+video{
+width:400px;
+height:300px;
+border-radius:10px;
+border:3px solid #2A7BE4;
+}
+
+.controls{
+margin-top:30px;
+}
+
+button{
+margin:10px;
+}
+
+.status-box{
+margin-top:20px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2 class="mt-4">Doctor Video Consultation</h2>
+
+<h5>Patient: {{username}}</h5>
+
+<p id="callStatus" class="status-box text-primary">
+Status: Waiting for doctor...
+</p>
+
+<div class="video-container">
+
+<div class="video-box">
+<h5>Your Camera</h5>
+<video id="localVideo" autoplay muted></video>
+</div>
+
+<div class="video-box">
+<h5>Doctor Camera</h5>
+<video id="remoteVideo" autoplay></video>
+</div>
+
+</div>
+
+<div class="controls">
+
+<button class="btn btn-success" onclick="startCall()">
+Start Call
+</button>
+
+<button class="btn btn-danger" onclick="endCall()">
+End Call
+</button>
+
+</div>
+
+<script>
+
+let localStream;
+
+async function startCall(){
+
+const status = document.getElementById("callStatus");
+
+try{
+
+localStream = await navigator.mediaDevices.getUserMedia({
+video:true,
+audio:true
+});
+
+document.getElementById("localVideo").srcObject = localStream;
+
+status.innerText = "Status: Call Started";
+
+}catch(error){
+
+alert("Camera or microphone access denied.");
+console.error(error);
+
+}
+
+}
+
+function endCall(){
+
+const status = document.getElementById("callStatus");
+
+if(localStream){
+localStream.getTracks().forEach(track => track.stop());
+}
+
+document.getElementById("localVideo").srcObject = null;
+
+status.innerText = "Status: Call Ended";
+
+}
+
+</script>
+
+</body>
+
+</html>

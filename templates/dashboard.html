@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>AI Smart Care Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#f4f7fb;
+margin:0;
+}
+
+/* Sidebar */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+height:100%;
+width:230px;
+background:#2A7FFF;
+padding-top:20px;
+color:white;
+}
+
+.sidebar h3{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+padding:12px 20px;
+text-decoration:none;
+margin:5px 10px;
+border-radius:6px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:rgba(255,255,255,0.2);
+}
+
+/* Header */
+
+.header{
+background:white;
+padding:15px 25px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+margin-left:230px;
+}
+
+/* Main content */
+
+.main{
+margin-left:230px;
+padding:30px;
+}
+
+/* Cards */
+
+.card{
+border:none;
+border-radius:12px;
+padding:20px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 6px 15px rgba(0,0,0,0.1);
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 25px rgba(0,0,0,0.2);
+}
+
+.card img{
+width:70px;
+margin-bottom:10px;
+}
+
+/* Medicine Table */
+
+.medicine-box{
+background:white;
+padding:20px;
+margin-top:40px;
+border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h3>AI Smart Care</h3>
+
+<a href="/dashboard/{{username}}">Dashboard</a> <a href="/add_medicine/{{username}}">Medicine Reminder</a> <a href="/health_record/{{username}}">Health Records</a> <a href="/medical_history/{{username}}">Medical History</a> <a href="/upload_report/{{username}}">Upload Reports</a> <a href="/view_reports/{{username}}">View Reports</a> <a href="/chatbot/{{username}}">AI Assistant</a> <a href="/book_appointment/{{username}}">Book Appointment</a> <a href="/my_appointments/{{username}}">My Appointments</a> <a href="/video_call">Consult Doctor</a> <a href="/">Logout</a>
+
+</div>
+
+<!-- Header -->
+
+<div class="header">
+<h4>Welcome {{username}}</h4>
+</div>
+
+<!-- Main Dashboard -->
+
+<div class="main">
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/add_medicine/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/4320/4320371.png">
+<h5>Medicine Reminder</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/health_record/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/2966/2966488.png">
+<h5>Health Records</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/medical_history/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png">
+<h5>Medical History</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/upload_report/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/724/724933.png">
+<h5>Upload Reports</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/view_reports/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/3371/3371425.png">
+<h5>View Reports</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/chatbot/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png">
+<h5>AI Health Assistant</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/book_appointment/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/942/942748.png">
+<h5>Book Appointment</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/video_call'">
+<img src="https://cdn-icons-png.flaticon.com/512/483/483947.png">
+<h5>Video Consultation</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card" onclick="location.href='/my_appointments/{{username}}'">
+<img src="https://cdn-icons-png.flaticon.com/512/747/747310.png">
+<h5>My Appointments</h5>
+</div>
+</div>
+
+</div>
+
+<!-- Medicine Table -->
+
+<div class="medicine-box">
+
+<h4>Your Medicines</h4>
+
+<table class="table table-striped">
+
+<tr>
+<th>Medicine</th>
+<th>Dosage</th>
+<th>Reminder Time</th>
+<th>Action</th>
+</tr>
+
+{% for m in medicines %}
+
+<tr>
+<td>{{m[2]}}</td>
+<td>{{m[3]}}</td>
+<td>{{m[4]}}</td>
+
+<td>
+<a href="/delete_medicine/{{m[0]}}/{{username}}" class="btn btn-danger btn-sm">
+Delete
+</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+var medicines = JSON.parse('{{ medicines | tojson | safe }}');
+
+function checkMedicineReminder(){
+
+var now = new Date();
+
+var hours = String(now.getHours()).padStart(2,'0');
+var minutes = String(now.getMinutes()).padStart(2,'0');
+
+var currentTime = hours + ":" + minutes;
+
+medicines.forEach(function(med){
+
+if(!med[4]) return;
+
+var reminderTime = med[4].toString().substring(0,5);
+
+if(reminderTime === currentTime){
+
+alert("🔔 Time to take medicine: " + med[2] + " (" + med[3] + ")");
+
+var speech = new SpeechSynthesisUtterance(
+"Please take your medicine " + med[2] + " dosage " + med[3]
+);
+
+speechSynthesis.speak(speech);
+
+}
+
+});
+
+}
+
+setInterval(checkMedicineReminder,10000);
+
+</script>
