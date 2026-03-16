@@ -1,18 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    const modal = document.getElementById("disclaimerModal");
+const modal = document.getElementById("disclaimerModal");
 
-    // show disclaimer
-    modal.style.display = "block";
+if(modal){
 
-    // auto close after 4 seconds
-    setTimeout(function(){
+modal.style.display = "block";
 
-        modal.style.display = "none";
+setTimeout(function(){
 
-        // redirect to home page
-        window.location.href = "/";
+modal.style.display = "none";
 
-    },4000);
+},3000);
+
+}
 
 });
