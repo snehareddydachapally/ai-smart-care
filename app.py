@@ -9,14 +9,10 @@ UPLOAD_FOLDER = "uploads"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # MySQL connection
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password",
-    database="smart_healthcare"
-)
+import sqlite3
 
-cursor = db.cursor(buffered=True)
+db = sqlite3.connect("database.db", check_same_thread=False)
+cursor = db.cursor()
 
 
 # HOME PAGE
