@@ -70,7 +70,7 @@ def create_tables():
     db.commit()
 
 
-# ✅ SAFE INIT (Flask 3 compatible)
+# ✅ RUN TABLE CREATION
 with app.app_context():
     create_tables()
 
@@ -130,6 +130,7 @@ def login_user():
     return "Invalid Login"
 
 
+# ✅ FIXED DASHBOARD (IMPORTANT)
 @app.route('/dashboard/<username>')
 def dashboard(username):
     db = get_db()
@@ -138,6 +139,9 @@ def dashboard(username):
         "SELECT * FROM medicines WHERE user_name=?",
         (username,)
     ).fetchall()
+
+    # 🔥 FIX: Convert Row → dict
+    medicines = [dict(row) for row in medicines]
 
     return render_template("dashboard.html", medicines=medicines, username=username)
 
@@ -181,6 +185,8 @@ def medical_history(username):
         "SELECT * FROM medical_history WHERE user_name=?",
         (username,)
     ).fetchall()
+
+    history = [dict(row) for row in history]
 
     return render_template("medical_history.html", history=history, username=username)
 
@@ -237,6 +243,8 @@ def view_reports(username):
         "SELECT * FROM reports WHERE user_name=?",
         (username,)
     ).fetchall()
+
+    reports = [dict(row) for row in reports]
 
     return render_template("view_reports.html", reports=reports, username=username)
 
@@ -299,6 +307,6 @@ def my_appointments(username):
         (username,)
     ).fetchall()
 
+    appointments = [dict(row) for row in appointments]
+
     return render_template("my_appointments.html", username=username, appointments=appointments)
-
-

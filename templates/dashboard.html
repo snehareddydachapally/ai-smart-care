@@ -225,42 +225,42 @@ Delete
 </div>
 
 </div>
-
 <script>
 
 var medicines = JSON.parse('{{ medicines | tojson | safe }}');
 
 function checkMedicineReminder(){
 
-var now = new Date();
+    var now = new Date();
 
-var hours = String(now.getHours()).padStart(2,'0');
-var minutes = String(now.getMinutes()).padStart(2,'0');
+    var hours = String(now.getHours()).padStart(2,'0');
+    var minutes = String(now.getMinutes()).padStart(2,'0');
 
-var currentTime = hours + ":" + minutes;
+    var currentTime = hours + ":" + minutes;
 
-medicines.forEach(function(med){
+    medicines.forEach(function(med){
 
-if(!med[4]) return;
+        if(!med.reminder_time) return;
 
-var reminderTime = med[4].toString().substring(0,5);
+        var reminderTime = med.reminder_time.toString().substring(0,5);
 
-if(reminderTime === currentTime){
+        if(reminderTime === currentTime){
 
-alert("🔔 Time to take medicine: " + med[2] + " (" + med[3] + ")");
+            alert("🔔 Time to take medicine: " + med.medicine_name + " (" + med.dosage + ")");
 
-var speech = new SpeechSynthesisUtterance(
-"Please take your medicine " + med[2] + " dosage " + med[3]
-);
+            var speech = new SpeechSynthesisUtterance(
+                "Please take your medicine " + med.medicine_name + " dosage " + med.dosage
+            );
 
-speechSynthesis.speak(speech);
+            speechSynthesis.speak(speech);
+        }
+
+    });
 
 }
 
-});
-
-}
-
-setInterval(checkMedicineReminder,10000);
+// check every 10 seconds
+setInterval(checkMedicineReminder, 10000);
 
 </script>
+
