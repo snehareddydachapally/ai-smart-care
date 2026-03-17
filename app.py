@@ -310,3 +310,8 @@ def my_appointments(username):
     appointments = [dict(row) for row in appointments]
 
     return render_template("my_appointments.html", username=username, appointments=appointments)
+import os
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
