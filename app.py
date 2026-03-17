@@ -251,7 +251,7 @@ def book_appointment(username):
 @app.route('/my_appointments/<username>')
 def my_appointments(username):
     db = get_db()
-
+    
     appointments = db.execute(
         "SELECT doctor_name,date,time,problem FROM appointments WHERE patient_name=?",
         (username,)
@@ -262,7 +262,66 @@ def my_appointments(username):
         username=username,
         appointments=appointments
     )
+def create_tables():
+    db = get_db()
+
+    # USERS TABLE
+    db.execute('''CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT,
+        password TEXT,
+        age TEXT,
+        gender TEXT,
+        phone TEXT,
+        blood_group TEXT,
+        doctor TEXT,
+        visit_type TEXT,
+        uhid TEXT
+    )''')
+
+    # MEDICINES TABLE
+    db.execute('''CREATE TABLE IF NOT EXISTS medicines (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_name TEXT,
+        medicine_name TEXT,
+        dosage TEXT,
+        reminder_time TEXT
+    )''')
+
+    # APPOINTMENTS TABLE
+    db.execute('''CREATE TABLE IF NOT EXISTS appointments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        patient_name TEXT,
+        doctor_name TEXT,
+        date TEXT,
+        time TEXT,
+        problem TEXT
+    )''')
+
+    # 👉 ADD HERE 👇 (NEW TABLES)
+
+    # MEDICAL HISTORY TABLE
+    db.execute('''CREATE TABLE IF NOT EXISTS medical_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_name TEXT,
+        condition_name TEXT,
+        diagnosis_date TEXT,
+        treatment TEXT,
+        notes TEXT
+    )''')
+
+    # REPORTS TABLE
+    db.execute('''CREATE TABLE IF NOT EXISTS reports (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_name TEXT,
+        file_name TEXT
+    )''')
+
+    # SAVE CHANGES
+    db.commit()
 
 
 if __name__ == '__main__':
+    create_tables()
     app.run(host="0.0.0.0", port=5000, debug=True)
