@@ -5,10 +5,8 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-
 UPLOAD_FOLDER = "uploads"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 
 # -------- DATABASE --------
@@ -72,6 +70,7 @@ def create_tables():
     db.commit()
 
 
+# ✅ SAFE INIT (Flask 3 compatible)
 with app.app_context():
     create_tables()
 
@@ -143,6 +142,7 @@ def dashboard(username):
     return render_template("dashboard.html", medicines=medicines, username=username)
 
 
+# -------- MEDICINES --------
 @app.route('/add_medicine/<username>')
 def add_medicine(username):
     return render_template("add_medicine.html", username=username)
@@ -166,6 +166,13 @@ def save_medicine():
     return redirect('/dashboard/' + request.form['user_name'])
 
 
+# -------- HEALTH RECORD --------
+@app.route('/health_record/<username>')
+def health_record(username):
+    return render_template("health_record.html", username=username)
+
+
+# -------- MEDICAL HISTORY --------
 @app.route('/medical_history/<username>')
 def medical_history(username):
     db = get_db()
@@ -197,11 +204,70 @@ def save_history():
     return redirect('/medical_history/' + request.form['user_name'])
 
 
+# -------- REPORTS --------
+@app.route('/upload_report/<username>')
+def upload_report(username):
+    return render_template("upload_report.html", username=username)
+
+
+@app.route('/save_report', methods=['POST'])
+def save_report():
+    db = get_db()
+
+    username = request.form['user_name']
+    file = request.files['report']
+
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    db.execute(
+        "INSERT INTO reports (user_name,file_name) VALUES (?,?)",
+        (username, filename)
+    )
+
+    db.commit()
+    return redirect('/dashboard/' + username)
+
+
+@app.route('/view_reports/<username>')
+def view_reports(username):
+    db = get_db()
+
+    reports = db.execute(
+        "SELECT * FROM reports WHERE user_name=?",
+        (username,)
+    ).fetchall()
+
+    return render_template("view_reports.html", reports=reports, username=username)
+
+
+# -------- CHATBOT --------
+@app.route('/chatbot/<username>')
+def chatbot(username):
+    return render_template("chatbot.html", username=username)
+
+
+@app.route('/get_response', methods=['POST'])
+def get_response():
+    message = request.json['message'].lower()
+
+    if "fever" in message:
+        reply = "Symptoms include fever, headache and body pain."
+    elif "headache" in message:
+        reply = "Headaches may occur due to stress or dehydration."
+    else:
+        reply = "Please consult a doctor."
+
+    return jsonify({"response": reply})
+
+
+# -------- VIDEO CALL --------
 @app.route('/video_call')
 def video_call():
     return render_template("video_call.html")
 
 
+# -------- APPOINTMENTS --------
 @app.route('/book_appointment/<username>', methods=['GET', 'POST'])
 def book_appointment(username):
     if request.method == 'POST':
@@ -234,3 +300,5 @@ def my_appointments(username):
     ).fetchall()
 
     return render_template("my_appointments.html", username=username, appointments=appointments)
+
+
