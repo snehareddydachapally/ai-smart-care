@@ -18,6 +18,7 @@ def get_db():
 
 # -------- CREATE TABLES --------
 def create_tables():
+    create_tables()
     db = get_db()
 
     db.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -230,7 +231,3 @@ def my_appointments(username):
     return render_template("my_appointments.html", username=username, appointments=appointments)
 
 
-# -------- RUN --------
-if __name__ == '__main__':
-    create_tables()
-    app.run(host="0.0.0.0", port=5000, debug=True)
