@@ -8,6 +8,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 # -------- DATABASE --------
 def get_db():
     db_path = os.path.join(os.getcwd(), "database.db")
@@ -69,10 +70,15 @@ def create_tables():
     db.commit()
 
 
+# ✅ SAFE INITIALIZATION (IMPORTANT)
+@app.before_first_request
+def initialize():
+    create_tables()
+
+
 # -------- ROUTES --------
 @app.route('/')
 def home():
-    create_tables()
     return render_template("index.html")
 
 
@@ -213,7 +219,6 @@ def book_appointment(username):
         )
 
         db.commit()
-        create_tables()
         return redirect('/dashboard/' + username)
 
     return render_template("book_appointment.html", username=username)
@@ -229,5 +234,3 @@ def my_appointments(username):
     ).fetchall()
 
     return render_template("my_appointments.html", username=username, appointments=appointments)
-
-
