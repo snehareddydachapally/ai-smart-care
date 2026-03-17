@@ -5,8 +5,10 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+
 UPLOAD_FOLDER = "uploads"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 
 # -------- DATABASE --------
@@ -70,9 +72,7 @@ def create_tables():
     db.commit()
 
 
-# ✅ SAFE INITIALIZATION (IMPORTANT)
-@app.before_first_request
-def initialize():
+with app.app_context():
     create_tables()
 
 
