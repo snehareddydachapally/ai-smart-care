@@ -18,7 +18,6 @@ def get_db():
 
 # -------- CREATE TABLES --------
 def create_tables():
-    create_tables()
     db = get_db()
 
     db.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -73,6 +72,7 @@ def create_tables():
 # -------- ROUTES --------
 @app.route('/')
 def home():
+    create_tables()
     return render_template("index.html")
 
 
